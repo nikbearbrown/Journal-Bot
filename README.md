@@ -1,8 +1,11 @@
 
 
-##= 📜 Project Abstract
+## Journal Bot
 
 Northeastern University (NEU) researchers face a significant challenge in navigating the complex, fragmented landscape of Open Access (OA) publishing. While the university funds numerous agreements to cover Article Processing Charges (APCs), this information is spread across multiple sources, and many agreements are subject to rapidly diminishing annual quotas. This project proposes the **NEU Open Access Journal Bot**, an intelligent tool to consolidate these disparate data sources into a single, user-friendly interface. The bot will analyze an author's paper draft to suggest topically relevant journals, presenting a clear "pros and cons" list that critically highlights **APC status** and **real-time quota availability**. By integrating data from the NEU Library's static agreement page, the dynamic SciFree search portal, and the Directory of Open Access Journals (DOAJ), the bot provides actionable intelligence. It will further assist researchers by providing an AI-powered reformatting tool to adapt their manuscript to a chosen journal's specific guidelines, thereby saving time, reducing administrative burden, and maximizing the value of the university's OA investments.
+
+[https://search.scifree.se/northeastern](https://search.scifree.se/northeastern)   
+[https://library.northeastern.edu/resource_discovery/open-access-publishing/](https://library.northeastern.edu/resource_discovery/open-access-publishing/)   
 
 ---
 
