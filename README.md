@@ -7,7 +7,7 @@ Northeastern University (NEU) researchers face a significant challenge in naviga
 [https://search.scifree.se/northeastern](https://search.scifree.se/northeastern)   
 [https://library.northeastern.edu/resource_discovery/open-access-publishing/](https://library.northeastern.edu/resource_discovery/open-access-publishing/)   
 
----
+
 
 ### 🚀 Step-by-Step Project Plan
 
@@ -33,6 +33,51 @@ Here is a high-level, 10-step plan to build, and deploy the bot.
 8.  **Integrate the Reformatting Assistant:** Connect the chat UI to a large language model (LLM) API (like the Gemini API). The backend will need to fetch the full text from the journal's `Guidelines_URL` and "prime" the AI with it as context, so its answers are accurate.
 9.  **Beta Testing & Feedback:** Deploy the tool to a staging server. Ask a few NEU librarians and researchers to test it with real drafts, focusing on the accuracy of the suggestions and quota data.
 10. **Final Deployment:** Refine the tool based on feedback and launch it for the NEU community.
+
+---
+
+### 📊 Step-by-Step: How to Find Journals & Meta-Info
+
+This is the detailed plan for **Step 2** of the project. Your bot will need to combine four distinct data-sourcing methods to build its "Master Journal Profile."
+
+**1. Source 1: The "Quota Data" (NEU Library Page)**
+This source provides the *most critical* and time-sensitive information: the APC quotas.
+
+* **How to get it:** This will be a targeted **web scraper** (e.g., using Python with libraries like `BeautifulSoup` or `Playwright`).
+* **Step 1:** Write a script that loads the NEU Library Open Access page you provided.
+* **Step 2:** Program the script to look for specific publisher names (e.g., "American Chemical Society:", "Elsevier:", "SpringerNature:").
+* **Step 3:** Extract the text immediately following these names to find the quota numbers (e.g., "32 remaining", "14 remaining", "13 remaining", "0 remaining").
+* **Step 4:** Store this in a simple "Publisher Quota" table in your database. This scraper *must* run daily, as this data changes frequently.
+
+**2. Source 2: The "NEU Coverage" Data (SciFree Portal)**
+This source confirms if a *specific journal* is part of *any* NEU agreement.
+
+* **How to get it:** This requires reverse-engineering the SciFree search tool.
+* **Step 1 (Ideal):** Check the browser's "Network" tab while using the SciFree search to see if it calls a hidden **API**. If it does, your bot can call this API directly (the best-case scenario).
+* **Step 2 (Likely):** If there's no API, your bot will have to **scrape the search results**. When the bot needs to check a journal (e.g., "Nature Communications"), it will query the SciFree URL (`https://search.scifree.se/northeastern?query=Nature+Communications`) and parse the resulting HTML to see if it's listed as "Covered."
+
+**3. Source 3: The "Truly Free" Journals (DOAJ)**
+This source provides the list of high-quality journals that charge *no fees to anyone*.
+
+* **How to get it:** The **DOAJ API** or their downloadable **CSV file**. This is the easiest and most reliable data source.
+* **Step 1:** Go to `doaj.org/docs/api/` (for the API) or `doaj.org/docs/csv/` (for the file).
+* **Step 2:** Fetch the data for all journals.
+* **Step 3:** Filter this massive list to find only the journals where the "APC" column is "No" or "0". This is your baseline list of "Always Free" journals.
+
+**4. Source 4: The "Journal Meta-Info" (Publisher Websites)**
+This source provides the specific author guidelines (e.g., abstract length, reference style) needed for the AI reformatting assistant.
+
+* **How to get it:** A **generic web scraper**. This is the most complex scraper.
+* **Step 1:** For each journal in your database, get its homepage URL (this is usually included in the DOAJ data).
+* **Step 2:** Write a scraper that visits that homepage and searches for HTML links (`<a>` tags) containing keywords like "Author Guidelines," "Information for Authors," "Submit Your Paper," or "For Authors."
+* **Step 3:** Store the *URL* of this guideline page in your database's `Guidelines_URL` column.
+* **Step 4:** The bot will fetch the *full text* from this URL *only* when a user selects that journal for reformatting, passing it to the LLM as context.
+
+By combining these four sources, your bot can create a "Master Profile" for any journal, allowing it to provide a complete and accurate recommendation.
+
+---
+
+Would you like me to start drafting the database schema or the technical specifications for the scrapers?
 
 ---
 
